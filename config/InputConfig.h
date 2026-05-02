@@ -6,5 +6,6 @@
 // =====================
 #define DEBOUNCE_MS   50
 #define LONG_PRESS_MS 500   // Reserved for future use
+#define RESET_HOLD_MS 3000
 
 #endif
