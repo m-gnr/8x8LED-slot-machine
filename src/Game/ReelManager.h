@@ -21,6 +21,7 @@ public:
 
   uint8_t getStoppedColumnCount() const;
   SlotColor getGridColor(uint8_t row, uint8_t col) const;
+  const SlotColor (*getGrid() const)[SLOT_COLUMN_COUNT];
 
 private:
   SlotColor getRandomColor() const;

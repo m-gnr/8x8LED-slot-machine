@@ -129,4 +129,9 @@ int RewardSystem::getMultiplier(SlotColor color, int matchCount) const {
   }
 
   return 0;
+
+const SlotColor (*ReelManager::getGrid() const)[SLOT_COLUMN_COUNT] {
+  return _grid;
+}
+
 }

@@ -119,3 +119,9 @@ SlotColor ReelManager::getRandomColor() const {
 
   return SlotColor::PURPLE;
 }
+
+const SlotColor (*ReelManager::getGrid() const)[SLOT_COLUMN_COUNT] {
+
+  return _grid;
+
+}
