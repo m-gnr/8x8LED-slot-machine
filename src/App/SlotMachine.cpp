@@ -136,6 +136,7 @@ void SlotMachine::handleIdle(ButtonType button) {
     _stateStartTime = millis();
 
     _buzzer.playSpinStart();
+    _buzzer.playSpinLoop();
     _lcd.showSpinning(_reels.getStoppedColumnCount());
   }
 }
@@ -151,6 +152,7 @@ void SlotMachine::handleSpinning(ButtonType button) {
     _lcd.showSpinning(_reels.getStoppedColumnCount());
 
     if (_reels.isFinished()) {
+      _buzzer.stopSpinLoop();
       _state = GameState::RESULT;
       _stateStartTime = millis();
       _lastResult = _rewardSystem.evaluate(_reels.getGrid(), _bet);
@@ -171,9 +173,10 @@ void SlotMachine::handleResult() {
     if (_bank >= TARGET_BANK) {
       _state = GameState::GAME_COMPLETE;
       _stateStartTime = millis();
+      _buzzer.stopSpinLoop();
       _effects.playWin(_lastResult, _reels.getGrid());
       _lcd.showGameComplete();
-      _buzzer.playWin();
+      _buzzer.playFinalVictory();
       return;
     }
 
@@ -189,9 +192,10 @@ void SlotMachine::handleResult() {
     _state = GameState::GAME_OVER;
     _stateStartTime = millis();
     clampBetToBank();
+    _buzzer.stopSpinLoop();
     _effects.playGameOver();
     _lcd.showGameOver();
-    _buzzer.playLose();
+    _buzzer.playFinalGameOver();
     return;
   }
 

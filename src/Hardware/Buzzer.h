@@ -16,12 +16,22 @@ public:
 
   void playBetChange();
   void playSpinStart();
+  void playSpinLoop();
+  void stopSpinLoop();
   void playColumnStop();
   void playWin();
   void playLose();
+  void playFinalVictory();
+  void playFinalGameOver();
 
 private:
-  void playMelody(const unsigned int* notes, const unsigned int* durations, uint8_t length);
+  void playMelody(
+    const unsigned int* notes,
+    const unsigned int* durations,
+    uint8_t length,
+    bool looping = false
+  );
+  void startSpinLoopMelody();
   void startCurrentNote();
 
   uint8_t _pin;
@@ -35,6 +45,8 @@ private:
   unsigned long _noteStartTime;
   bool _playing;
   bool _resting;
+  bool _looping;
+  bool _spinLoopActive;
 };
 
 #endif
