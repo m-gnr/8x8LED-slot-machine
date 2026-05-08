@@ -350,10 +350,26 @@ void SlotMachine::logRewardDebug() const {
 
   Serial.print("winningRowCount=");
   Serial.print(_lastResult.winningRowCount);
+  Serial.print(" winningColumnCount=");
+  Serial.print(_lastResult.winningColumnCount);
+  Serial.print(" verticalReward=");
+  Serial.print(_lastResult.verticalReward);
   Serial.print(" totalReward=");
   Serial.print(_lastResult.totalReward);
   Serial.print(" jackpot=");
   Serial.println(_lastResult.isJackpot ? "YES" : "NO");
+
+  for (uint8_t col = 0; col < SLOT_COLUMN_COUNT; col++) {
+    Serial.print("Column ");
+    Serial.print(col);
+    Serial.print(": hasWin=");
+    Serial.print(_lastResult.columns[col].hasWin ? "YES" : "NO");
+    Serial.print(" color=");
+    Serial.print(slotColorName(_lastResult.columns[col].color));
+    Serial.print(" reward=");
+    Serial.println(_lastResult.columns[col].reward);
+  }
+
   Serial.println("====================");
 }
 

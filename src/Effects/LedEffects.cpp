@@ -87,6 +87,17 @@ void LedEffects::playWin(
     }
   }
 
+  for (uint8_t col = 0; col < SLOT_COLUMN_COUNT; col++) {
+    if (!result.columns[col].hasWin) {
+      continue;
+    }
+
+    for (uint8_t row = 0; row < SLOT_ROW_COUNT; row++) {
+      _winningBlocks[row][col] = true;
+      _blockColors[row][col] = grid[row][col];
+    }
+  }
+
   _currentEffect = EffectType::WIN;
   _active = true;
   _lastUpdateTime = millis();

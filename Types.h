@@ -51,11 +51,24 @@ struct RowResult {
 };
 
 // =====================
+// Column Result
+// =====================
+struct ColumnResult {
+  bool hasWin;
+  SlotColor color;
+  int columnIndex;
+  int reward;
+};
+
+// =====================
 // Spin Result
 // =====================
 struct SpinResult {
   RowResult rows[SLOT_ROW_COUNT];
+  ColumnResult columns[SLOT_COLUMN_COUNT];
   int winningRowCount;
+  int winningColumnCount;
+  int verticalReward;
   int totalReward;
   bool isJackpot;
 };

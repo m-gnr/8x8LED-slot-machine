@@ -10,6 +10,8 @@ SpinResult RewardSystem::evaluate(
 ) const {
   SpinResult result;
   result.winningRowCount = 0;
+  result.winningColumnCount = 0;
+  result.verticalReward = 0;
   result.totalReward = 0;
   result.isJackpot = false;
 
@@ -33,6 +35,17 @@ SpinResult RewardSystem::evaluate(
     result.totalReward =
       result.totalReward * BONUS_THREE_ROWS_MULTIPLIER / BONUS_MULTIPLIER_DIVISOR;
   }
+
+  for (uint8_t col = 0; col < SLOT_COLUMN_COUNT; col++) {
+    result.columns[col] = evaluateColumn(grid, col, bet);
+
+    if (result.columns[col].hasWin) {
+      result.winningColumnCount++;
+      result.verticalReward += result.columns[col].reward;
+    }
+  }
+
+  result.totalReward += result.verticalReward;
 
   return result;
 }
@@ -78,6 +91,40 @@ RowResult RewardSystem::evaluateRow(
 
     col += matchCount;
   }
+
+  return result;
+}
+
+ColumnResult RewardSystem::evaluateColumn(
+  const SlotColor grid[SLOT_ROW_COUNT][SLOT_COLUMN_COUNT],
+  uint8_t col,
+  int bet
+) const {
+  ColumnResult result;
+  result.hasWin = false;
+  result.color = SlotColor::EMPTY;
+  result.columnIndex = col;
+  result.reward = 0;
+
+  if (col >= SLOT_COLUMN_COUNT) {
+    return result;
+  }
+
+  SlotColor firstColor = grid[0][col];
+
+  if (firstColor == SlotColor::EMPTY) {
+    return result;
+  }
+
+  for (uint8_t row = 1; row < SLOT_ROW_COUNT; row++) {
+    if (grid[row][col] != firstColor) {
+      return result;
+    }
+  }
+
+  result.hasWin = true;
+  result.color = firstColor;
+  result.reward = bet * getVerticalMultiplier(firstColor);
 
   return result;
 }
@@ -138,4 +185,21 @@ int RewardSystem::getMultiplier(SlotColor color, int matchCount) const {
   }
 
   return 0;
+}
+
+int RewardSystem::getVerticalMultiplier(SlotColor color) const {
+  switch (color) {
+    case SlotColor::RED:
+      return VERTICAL_MULTIPLIER_RED;
+    case SlotColor::GREEN:
+      return VERTICAL_MULTIPLIER_GREEN;
+    case SlotColor::BLUE:
+      return VERTICAL_MULTIPLIER_BLUE;
+    case SlotColor::YELLOW:
+      return VERTICAL_MULTIPLIER_YELLOW;
+    case SlotColor::PURPLE:
+      return VERTICAL_MULTIPLIER_PURPLE;
+    default:
+      return 0;
+  }
 }

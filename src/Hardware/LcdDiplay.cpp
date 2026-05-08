@@ -46,6 +46,8 @@ void LcdDisplay::showResult(const SpinResult& result) {
   _lcd.setCursor(0, 0);
   _lcd.print(LCD_MSG_ROWS);
   _lcd.print(result.winningRowCount);
+  _lcd.print(" Col:");
+  _lcd.print(result.winningColumnCount);
 
   _lcd.setCursor(0, 1);
   _lcd.print(LCD_MSG_REWARD);

@@ -51,6 +51,13 @@
 #define MULTIPLIER_4_YELLOW 10
 #define MULTIPLIER_4_PURPLE 15
 
+// Vertical 3-row column bonus
+#define VERTICAL_MULTIPLIER_RED    1
+#define VERTICAL_MULTIPLIER_GREEN  2
+#define VERTICAL_MULTIPLIER_BLUE   3
+#define VERTICAL_MULTIPLIER_YELLOW 4
+#define VERTICAL_MULTIPLIER_PURPLE 5
+
 // =====================
 // BONUS SYSTEM
 // Integer-based multipliers
