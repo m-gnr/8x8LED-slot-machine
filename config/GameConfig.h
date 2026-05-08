@@ -17,6 +17,11 @@
 #define EFFECT_UPDATE_MS 80
 
 // =====================
+// DEBUG
+// =====================
+#define DEBUG_REWARD_LOGS 0
+
+// =====================
 // COLOR PROBABILITIES (%)
 // Total must be 100
 // =====================

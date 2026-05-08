@@ -80,7 +80,9 @@ void LedEffects::playWin(
   for (uint8_t row = 0; row < SLOT_ROW_COUNT; row++) {
     for (uint8_t col = 0; col < SLOT_COLUMN_COUNT; col++) {
       _winningBlocks[row][col] =
-        result.rows[row].hasWin && col < result.rows[row].matchCount;
+        result.rows[row].hasWin &&
+        col >= result.rows[row].startColumn &&
+        col < result.rows[row].startColumn + result.rows[row].matchCount;
       _blockColors[row][col] = grid[row][col];
     }
   }

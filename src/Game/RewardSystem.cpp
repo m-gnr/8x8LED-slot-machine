@@ -44,30 +44,39 @@ RowResult RewardSystem::evaluateRow(
   RowResult result;
   result.hasWin = false;
   result.color = SlotColor::EMPTY;
+  result.startColumn = 0;
   result.matchCount = 0;
   result.reward = 0;
 
-  SlotColor firstColor = row[0];
+  uint8_t col = 0;
 
-  if (firstColor == SlotColor::EMPTY) {
-    return result;
-  }
+  while (col < SLOT_COLUMN_COUNT) {
+    SlotColor currentColor = row[col];
 
-  uint8_t matchCount = 1;
-
-  for (uint8_t col = 1; col < SLOT_COLUMN_COUNT; col++) {
-    if (row[col] == firstColor) {
-      matchCount++;
-    } else {
-      break;
+    if (currentColor == SlotColor::EMPTY) {
+      col++;
+      continue;
     }
-  }
 
-  if (matchCount >= 3) {
-    result.hasWin = true;
-    result.color = firstColor;
-    result.matchCount = matchCount;
-    result.reward = bet * getMultiplier(firstColor, matchCount);
+    uint8_t startColumn = col;
+    uint8_t matchCount = 1;
+
+    while (
+      col + matchCount < SLOT_COLUMN_COUNT &&
+      row[col + matchCount] == currentColor
+    ) {
+      matchCount++;
+    }
+
+    if (matchCount >= 3 && matchCount > result.matchCount) {
+      result.hasWin = true;
+      result.color = currentColor;
+      result.startColumn = startColumn;
+      result.matchCount = matchCount;
+      result.reward = bet * getMultiplier(currentColor, matchCount);
+    }
+
+    col += matchCount;
   }
 
   return result;

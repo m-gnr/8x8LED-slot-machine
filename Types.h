@@ -45,6 +45,7 @@ enum class SlotColor {
 struct RowResult {
   bool hasWin;
   SlotColor color;
+  int startColumn;
   int matchCount;
   int reward;
 };

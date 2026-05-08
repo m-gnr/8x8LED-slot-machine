@@ -14,6 +14,10 @@ SlotMachine::SlotMachine()
     _stateStartTime(0) {}
 
 void SlotMachine::begin() {
+#if DEBUG_REWARD_LOGS
+  Serial.begin(115200);
+#endif
+
   randomSeed(analogRead(0));
 
   _buttons.begin();
@@ -156,6 +160,9 @@ void SlotMachine::handleSpinning(ButtonType button) {
       _state = GameState::RESULT;
       _stateStartTime = millis();
       _lastResult = _rewardSystem.evaluate(_reels.getGrid(), _bet);
+#if DEBUG_REWARD_LOGS
+      logRewardDebug();
+#endif
       _lcd.showResult(_lastResult);
     }
   }
@@ -309,6 +316,65 @@ void SlotMachine::clampBetToBank() {
     _bet = _bank;
   }
 }
+
+#if DEBUG_REWARD_LOGS
+void SlotMachine::logRewardDebug() const {
+  Serial.println("=== REWARD DEBUG ===");
+
+  const SlotColor (*grid)[SLOT_COLUMN_COUNT] = _reels.getGrid();
+
+  for (uint8_t row = 0; row < SLOT_ROW_COUNT; row++) {
+    Serial.print("Row ");
+    Serial.print(row);
+    Serial.print(": ");
+
+    for (uint8_t col = 0; col < SLOT_COLUMN_COUNT; col++) {
+      Serial.print(slotColorName(grid[row][col]));
+
+      if (col < SLOT_COLUMN_COUNT - 1) {
+        Serial.print(" ");
+      }
+    }
+
+    Serial.print(" | hasWin=");
+    Serial.print(_lastResult.rows[row].hasWin ? "YES" : "NO");
+    Serial.print(" startColumn=");
+    Serial.print(_lastResult.rows[row].startColumn);
+    Serial.print(" matchCount=");
+    Serial.print(_lastResult.rows[row].matchCount);
+    Serial.print(" color=");
+    Serial.print(slotColorName(_lastResult.rows[row].color));
+    Serial.print(" reward=");
+    Serial.println(_lastResult.rows[row].reward);
+  }
+
+  Serial.print("winningRowCount=");
+  Serial.print(_lastResult.winningRowCount);
+  Serial.print(" totalReward=");
+  Serial.print(_lastResult.totalReward);
+  Serial.print(" jackpot=");
+  Serial.println(_lastResult.isJackpot ? "YES" : "NO");
+  Serial.println("====================");
+}
+
+const char* SlotMachine::slotColorName(SlotColor color) const {
+  switch (color) {
+    case SlotColor::RED:
+      return "RED";
+    case SlotColor::GREEN:
+      return "GREEN";
+    case SlotColor::BLUE:
+      return "BLUE";
+    case SlotColor::YELLOW:
+      return "YELLOW";
+    case SlotColor::PURPLE:
+      return "PURPLE";
+    case SlotColor::EMPTY:
+    default:
+      return "EMPTY";
+  }
+}
+#endif
 
 uint8_t SlotMachine::getResetSecondsLeft() const {
   unsigned long holdTime = _buttons.getResetComboHoldTime();

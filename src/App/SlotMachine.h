@@ -4,6 +4,7 @@
 #include <Arduino.h>
 
 #include "../../Types.h"
+#include "../../config/GameConfig.h"
 
 #include "../Hardware/ButtonManager.h"
 #include "../Hardware/Buzzer.h"
@@ -38,6 +39,11 @@ private:
   void renderReels();
   void updateLcdForState();
   void clampBetToBank();
+
+#if DEBUG_REWARD_LOGS
+  void logRewardDebug() const;
+  const char* slotColorName(SlotColor color) const;
+#endif
 
   uint8_t getResetSecondsLeft() const;
 
