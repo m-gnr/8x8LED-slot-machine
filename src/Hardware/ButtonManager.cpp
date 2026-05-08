@@ -14,17 +14,13 @@ ButtonManager::ButtonManager()
 
 void ButtonManager::begin() {
   for (uint8_t i = 0; i < 3; i++) {
-<<<<<<< HEAD
     pinMode(_buttons[i].pin, INPUT_PULLDOWN);
-=======
-    pinMode(_buttons[i].pin, INPUT_PULLUP);
->>>>>>> 9b0574246a65be3cbc8d62ab38c12e229cd0a0a2
 
-    bool reading = readButton(i);
+    bool pressed = readButton(i);
 
-    _buttons[i].pressed = reading;
-    _buttons[i].lastReading = reading;
-    _buttons[i].stable = reading;
+    _buttons[i].pressed = pressed;
+    _buttons[i].lastReading = pressed;
+    _buttons[i].stable = pressed;
     _buttons[i].lastDebounceTime = 0;
   }
 
@@ -41,22 +37,20 @@ void ButtonManager::update() {
   pressedButton = ButtonType::NONE;
 
   for (uint8_t i = 0; i < 3; i++) {
-    bool reading = readButton(i);
+    bool pressed = readButton(i);
 
-    if (reading != _buttons[i].lastReading) {
+    if (pressed != _buttons[i].lastReading) {
       _buttons[i].lastDebounceTime = millis();
-      _buttons[i].lastReading = reading;
+      _buttons[i].lastReading = pressed;
     }
 
     if ((millis() - _buttons[i].lastDebounceTime) >= DEBOUNCE_MS) {
-      if (reading != _buttons[i].stable) {
-        _buttons[i].stable = reading;
+      if (pressed != _buttons[i].stable) {
+        _buttons[i].stable = pressed;
+        _buttons[i].pressed = pressed;
 
-        if (_buttons[i].stable) {
-          _buttons[i].pressed = true;
+        if (pressed) {
           pressedButton = buttonTypes[i];
-        } else {
-          _buttons[i].pressed = false;
         }
       }
     }
@@ -76,9 +70,9 @@ ButtonType ButtonManager::getPressedButton() const {
 }
 
 bool ButtonManager::areAllButtonsPressed() const {
-  return _buttons[0].stable &&
-         _buttons[1].stable &&
-         _buttons[2].stable;
+  return _buttons[0].pressed &&
+         _buttons[1].pressed &&
+         _buttons[2].pressed;
 }
 
 bool ButtonManager::isResetComboPressed() const {
@@ -94,10 +88,6 @@ unsigned long ButtonManager::getResetComboHoldTime() const {
 }
 
 bool ButtonManager::readButton(uint8_t index) const {
-  // INPUT_PULLUP -> LOW = pressed
-<<<<<<< HEAD
+  // INPUT_PULLDOWN -> HIGH = pressed
   return digitalRead(_buttons[index].pin) == HIGH;
-=======
-  return digitalRead(_buttons[index].pin) == LOW;
->>>>>>> 9b0574246a65be3cbc8d62ab38c12e229cd0a0a2
 }

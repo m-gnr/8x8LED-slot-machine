@@ -29,25 +29,25 @@ const int spinMusicDurations[] = {
 };
 
 // --- 3. KAZANMA (WIN / JACKPOT) MÜZİĞİ ---
-// Giderek hızlanan, tatmin edici ve neşeli bir arcade kazanma sesi
+// Orijinal, kısa, caz-kumarhane hissi veren yükselen başarı sesi
 const int winNotes[] = {
-  NOTE_C4, NOTE_E4, NOTE_G4, NOTE_C5, 
-  NOTE_E5, NOTE_G5, NOTE_C6, 0, NOTE_C6
+  NOTE_C5, NOTE_E5, NOTE_FS5, NOTE_G5, NOTE_AS5,
+  NOTE_A5, NOTE_C6, 0, NOTE_D6, NOTE_C6
 };
 const int winDurations[] = {
-  12, 12, 12, 12, 
-  12, 12, 4, 16, 2
+  16, 16, 24, 12, 16,
+  24, 10, 32, 14, 5
 };
 
 // --- 4. KAYBETME (GAME OVER) MÜZİĞİ ---
-// Enerjisi tükenen, aşağı doğru çöken bir melodi
+// Orijinal, kromatik ve hafif komik düşüş sesi
 const int loseNotes[] = {
-  NOTE_G4, NOTE_FS4, NOTE_F4, NOTE_E4, 0,
-  NOTE_DS4, NOTE_D4, NOTE_CS4, NOTE_C4
+  NOTE_G5, NOTE_FS5, NOTE_F5, NOTE_E5, 0,
+  NOTE_DS5, NOTE_D5, NOTE_CS5, NOTE_C5
 };
 const int loseDurations[] = {
-  8, 8, 8, 4, 16,
-  8, 8, 8, 2
+  24, 24, 20, 16, 32,
+  20, 16, 14, 6
 };
 
 #endif

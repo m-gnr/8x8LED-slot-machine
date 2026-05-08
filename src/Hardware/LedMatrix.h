@@ -22,8 +22,6 @@ public:
   void drawBlock(uint8_t slotColumn, uint8_t slotRow, SlotColor color);
   void drawSeparators(uint32_t color);
 
-  void showWinSeparators();
-  void showLoseSeparators();
   void showDefaultSeparators();
 
   uint32_t colorFromSlotColor(SlotColor color) const;

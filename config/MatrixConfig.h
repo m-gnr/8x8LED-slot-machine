@@ -60,16 +60,12 @@
 // =====================
 // SEPARATOR COLORS (RGB)
 // =====================
-#define SEPARATOR_DEFAULT_R 255
-#define SEPARATOR_DEFAULT_G 180
-#define SEPARATOR_DEFAULT_B 0
+#define SEPARATOR_R 8
+#define SEPARATOR_G 8
+#define SEPARATOR_B 8
 
-#define SEPARATOR_WIN_R     0
-#define SEPARATOR_WIN_G     255
-#define SEPARATOR_WIN_B     0
-
-#define SEPARATOR_LOSE_R    255
-#define SEPARATOR_LOSE_G    0
-#define SEPARATOR_LOSE_B    0
+#define SEPARATOR_DEFAULT_R SEPARATOR_R
+#define SEPARATOR_DEFAULT_G SEPARATOR_G
+#define SEPARATOR_DEFAULT_B SEPARATOR_B
 
 #endif

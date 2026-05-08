@@ -1,55 +1,37 @@
 #include "SlotMachine.h"
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 9b0574246a65be3cbc8d62ab38c12e229cd0a0a2
 #include "../../config/GameConfig.h"
 #include "../../config/InputConfig.h"
 #include "../../config/MatrixConfig.h"
-
-<<<<<<< HEAD
 #include "../../config/PinConfig.h"
 
-=======
->>>>>>> 9b0574246a65be3cbc8d62ab38c12e229cd0a0a2
 SlotMachine::SlotMachine()
   : _state(GameState::IDLE),
+    _buzzer(BUZZER_PIN),
+    _effects(_matrix),
     _bank(START_BANK),
     _bet(MIN_BET),
-<<<<<<< HEAD
-    _stateStartTime(0),
-    _soundManager(BUZZER_PIN) {}
-=======
     _stateStartTime(0) {}
->>>>>>> 9b0574246a65be3cbc8d62ab38c12e229cd0a0a2
 
 void SlotMachine::begin() {
   randomSeed(analogRead(0));
 
   _buttons.begin();
   _matrix.begin();
+  _buzzer.init();
   _lcd.begin();
   _reels.begin();
 
-<<<<<<< HEAD
-  _soundManager.init();      
-  _soundManager.playStartMusic();
-
-=======
->>>>>>> 9b0574246a65be3cbc8d62ab38c12e229cd0a0a2
   resetGame();
 }
 
 void SlotMachine::update() {
   _buttons.update();
-<<<<<<< HEAD
-  _soundManager.update();
-=======
->>>>>>> 9b0574246a65be3cbc8d62ab38c12e229cd0a0a2
 
   if (_buttons.isResetComboPressed()) {
     handleResetCombo();
+    _buzzer.update();
+    _effects.update();
     return;
   }
 
@@ -85,6 +67,9 @@ void SlotMachine::update() {
       handleGameComplete();
       break;
   }
+
+  _buzzer.update();
+  _effects.update();
 }
 
 void SlotMachine::resetGame() {
@@ -93,6 +78,8 @@ void SlotMachine::resetGame() {
   _bet = MIN_BET;
   _stateStartTime = millis();
 
+  _effects.stop();
+  _buzzer.stopMelody();
   _reels.begin();
 
   _matrix.clear();
@@ -113,34 +100,42 @@ void SlotMachine::handleResetCombo() {
 
 void SlotMachine::handleIdle(ButtonType button) {
   if (button == ButtonType::GREEN) {
-    if (_bet < MAX_BET && _bet < _bank) {
+    if (_bet < _bank) {
       _bet++;
+      _buzzer.playBetChange();
     }
 
+    clampBetToBank();
     _lcd.showIdle(_bank, _bet);
   }
 
   else if (button == ButtonType::RED) {
     if (_bet > MIN_BET) {
       _bet--;
+      _buzzer.playBetChange();
     }
 
+    clampBetToBank();
     _lcd.showIdle(_bank, _bet);
   }
 
   else if (button == ButtonType::BLUE) {
+    if (_bank < MIN_BET || _bet > _bank) {
+      clampBetToBank();
+      _lcd.showIdle(_bank, _bet);
+      return;
+    }
+
+    _effects.stop();
     _bank -= _bet;
+    clampBetToBank();
 
     _reels.startSpin();
 
     _state = GameState::SPINNING;
     _stateStartTime = millis();
 
-<<<<<<< HEAD
-    _soundManager.playSpinMusic();
-
-=======
->>>>>>> 9b0574246a65be3cbc8d62ab38c12e229cd0a0a2
+    _buzzer.playSpinStart();
     _lcd.showSpinning(_reels.getStoppedColumnCount());
   }
 }
@@ -151,6 +146,7 @@ void SlotMachine::handleSpinning(ButtonType button) {
 
   if (button == ButtonType::BLUE) {
     _reels.stopNextColumn();
+    _buzzer.playColumnStop();
 
     _lcd.showSpinning(_reels.getStoppedColumnCount());
 
@@ -170,46 +166,43 @@ void SlotMachine::handleResult() {
 
   if (_lastResult.totalReward > 0) {
     _bank += _lastResult.totalReward;
+    clampBetToBank();
 
     if (_bank >= TARGET_BANK) {
       _state = GameState::GAME_COMPLETE;
       _stateStartTime = millis();
-      _matrix.showWinSeparators();
-      _matrix.show();
+      _effects.playWin(_lastResult, _reels.getGrid());
       _lcd.showGameComplete();
-<<<<<<< HEAD
-      _soundManager.playGameWonMusic(); 
-=======
->>>>>>> 9b0574246a65be3cbc8d62ab38c12e229cd0a0a2
+      _buzzer.playWin();
       return;
     }
 
     _state = GameState::WIN;
     _stateStartTime = millis();
-    _matrix.showWinSeparators();
-    _matrix.show();
+    _effects.playWin(_lastResult, _reels.getGrid());
     _lcd.showWin(_lastResult.totalReward, _bank);
+    _buzzer.playWin();
     return;
   }
 
   if (_bank <= 0) {
     _state = GameState::GAME_OVER;
     _stateStartTime = millis();
-    _matrix.showLoseSeparators();
-    _matrix.show();
+    clampBetToBank();
+    _effects.playGameOver();
     _lcd.showGameOver();
-<<<<<<< HEAD
-    _soundManager.playGameOverMusic(); 
-=======
->>>>>>> 9b0574246a65be3cbc8d62ab38c12e229cd0a0a2
+    _buzzer.playLose();
     return;
   }
 
   _state = GameState::LOSE;
   _stateStartTime = millis();
-  _matrix.showLoseSeparators();
+  clampBetToBank();
+  _effects.playLose();
+  _matrix.showDefaultSeparators();
   _matrix.show();
   _lcd.showLose(_bank);
+  _buzzer.playLose();
 }
 
 void SlotMachine::handleWin() {
@@ -219,6 +212,8 @@ void SlotMachine::handleWin() {
 
   _state = GameState::IDLE;
   _stateStartTime = millis();
+  _effects.stop();
+  clampBetToBank();
 
   _matrix.showDefaultSeparators();
   _matrix.show();
@@ -233,6 +228,8 @@ void SlotMachine::handleLose() {
 
   _state = GameState::IDLE;
   _stateStartTime = millis();
+  _effects.stop();
+  clampBetToBank();
 
   _matrix.showDefaultSeparators();
   _matrix.show();
@@ -294,10 +291,21 @@ void SlotMachine::updateLcdForState() {
   }
 }
 
-<<<<<<< HEAD
+void SlotMachine::clampBetToBank() {
+  if (_bank < MIN_BET) {
+    _bet = _bank;
+    return;
+  }
 
-=======
->>>>>>> 9b0574246a65be3cbc8d62ab38c12e229cd0a0a2
+  if (_bet < MIN_BET) {
+    _bet = MIN_BET;
+  }
+
+  if (_bet > _bank) {
+    _bet = _bank;
+  }
+}
+
 uint8_t SlotMachine::getResetSecondsLeft() const {
   unsigned long holdTime = _buttons.getResetComboHoldTime();
 
@@ -306,9 +314,4 @@ uint8_t SlotMachine::getResetSecondsLeft() const {
   }
 
   return (RESET_HOLD_MS - holdTime + 999) / 1000;
-<<<<<<< HEAD
 }
-
-=======
-}
->>>>>>> 9b0574246a65be3cbc8d62ab38c12e229cd0a0a2

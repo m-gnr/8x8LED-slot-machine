@@ -20,8 +20,9 @@ public:
   LedEffects(LedMatrix& matrix);
 
   void update();
+  void stop();
 
-  void playWin();
+  void playWin(const SpinResult& result, const SlotColor grid[SLOT_ROW_COUNT][SLOT_COLUMN_COUNT]);
   void playLose();
   void playReset(uint8_t secondsLeft);
   void playGameOver();
@@ -36,6 +37,9 @@ private:
   bool _active;
   unsigned long _lastUpdateTime;
   bool _blinkState;
+
+  bool _winningBlocks[SLOT_ROW_COUNT][SLOT_COLUMN_COUNT];
+  SlotColor _blockColors[SLOT_ROW_COUNT][SLOT_COLUMN_COUNT];
 };
 
 #endif

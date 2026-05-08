@@ -73,22 +73,6 @@ void LedMatrix::drawSeparators(uint32_t color) {
   }
 }
 
-void LedMatrix::showWinSeparators() {
-  drawSeparators(_matrix.Color(
-    SEPARATOR_WIN_R,
-    SEPARATOR_WIN_G,
-    SEPARATOR_WIN_B
-  ));
-}
-
-void LedMatrix::showLoseSeparators() {
-  drawSeparators(_matrix.Color(
-    SEPARATOR_LOSE_R,
-    SEPARATOR_LOSE_G,
-    SEPARATOR_LOSE_B
-  ));
-}
-
 void LedMatrix::showDefaultSeparators() {
   drawSeparators(_matrix.Color(
     SEPARATOR_DEFAULT_R,

@@ -14,16 +14,13 @@
 // SDA = D10
 // SCL = D11
 
-<<<<<<< HEAD
 // Buzzer (Pasif)
 #define BUZZER_PIN D9
 
-=======
->>>>>>> 9b0574246a65be3cbc8d62ab38c12e229cd0a0a2
 // Physical Buttons
-// Buttons use INPUT_PULLUP.
+// Buttons use INPUT_PULLDOWN.
 // One side of each button goes to the pin,
-// the other side goes to GND.
+// the other side goes to 3V3.
 #define BUTTON_GREEN_PIN D12   // Increase bet
 #define BUTTON_RED_PIN   D13   // Decrease bet
 #define BUTTON_BLUE_PIN  D14   // Spin / Stop columns

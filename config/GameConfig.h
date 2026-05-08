@@ -7,7 +7,6 @@
 #define START_BANK  10
 #define TARGET_BANK 99
 #define MIN_BET     1
-#define MAX_BET     10
 
 // =====================
 // GAME TIMING (ms)
