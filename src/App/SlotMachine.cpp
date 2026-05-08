@@ -1,18 +1,28 @@
 #include "SlotMachine.h"
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 9b0574246a65be3cbc8d62ab38c12e229cd0a0a2
 #include "../../config/GameConfig.h"
 #include "../../config/InputConfig.h"
 #include "../../config/MatrixConfig.h"
 
+<<<<<<< HEAD
 #include "../../config/PinConfig.h"
 
+=======
+>>>>>>> 9b0574246a65be3cbc8d62ab38c12e229cd0a0a2
 SlotMachine::SlotMachine()
   : _state(GameState::IDLE),
     _bank(START_BANK),
     _bet(MIN_BET),
+<<<<<<< HEAD
     _stateStartTime(0),
     _soundManager(BUZZER_PIN) {}
+=======
+    _stateStartTime(0) {}
+>>>>>>> 9b0574246a65be3cbc8d62ab38c12e229cd0a0a2
 
 void SlotMachine::begin() {
   randomSeed(analogRead(0));
@@ -22,15 +32,21 @@ void SlotMachine::begin() {
   _lcd.begin();
   _reels.begin();
 
+<<<<<<< HEAD
   _soundManager.init();      
   _soundManager.playStartMusic();
 
+=======
+>>>>>>> 9b0574246a65be3cbc8d62ab38c12e229cd0a0a2
   resetGame();
 }
 
 void SlotMachine::update() {
   _buttons.update();
+<<<<<<< HEAD
   _soundManager.update();
+=======
+>>>>>>> 9b0574246a65be3cbc8d62ab38c12e229cd0a0a2
 
   if (_buttons.isResetComboPressed()) {
     handleResetCombo();
@@ -120,8 +136,11 @@ void SlotMachine::handleIdle(ButtonType button) {
     _state = GameState::SPINNING;
     _stateStartTime = millis();
 
+<<<<<<< HEAD
     _soundManager.playSpinMusic();
 
+=======
+>>>>>>> 9b0574246a65be3cbc8d62ab38c12e229cd0a0a2
     _lcd.showSpinning(_reels.getStoppedColumnCount());
   }
 }
@@ -158,7 +177,10 @@ void SlotMachine::handleResult() {
       _matrix.showWinSeparators();
       _matrix.show();
       _lcd.showGameComplete();
+<<<<<<< HEAD
       _soundManager.playGameWonMusic(); 
+=======
+>>>>>>> 9b0574246a65be3cbc8d62ab38c12e229cd0a0a2
       return;
     }
 
@@ -176,7 +198,10 @@ void SlotMachine::handleResult() {
     _matrix.showLoseSeparators();
     _matrix.show();
     _lcd.showGameOver();
+<<<<<<< HEAD
     _soundManager.playGameOverMusic(); 
+=======
+>>>>>>> 9b0574246a65be3cbc8d62ab38c12e229cd0a0a2
     return;
   }
 
@@ -269,7 +294,10 @@ void SlotMachine::updateLcdForState() {
   }
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 9b0574246a65be3cbc8d62ab38c12e229cd0a0a2
 uint8_t SlotMachine::getResetSecondsLeft() const {
   unsigned long holdTime = _buttons.getResetComboHoldTime();
 
@@ -278,5 +306,9 @@ uint8_t SlotMachine::getResetSecondsLeft() const {
   }
 
   return (RESET_HOLD_MS - holdTime + 999) / 1000;
+<<<<<<< HEAD
 }
 
+=======
+}
+>>>>>>> 9b0574246a65be3cbc8d62ab38c12e229cd0a0a2

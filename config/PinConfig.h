@@ -14,9 +14,12 @@
 // SDA = D10
 // SCL = D11
 
+<<<<<<< HEAD
 // Buzzer (Pasif)
 #define BUZZER_PIN D9
 
+=======
+>>>>>>> 9b0574246a65be3cbc8d62ab38c12e229cd0a0a2
 // Physical Buttons
 // Buttons use INPUT_PULLUP.
 // One side of each button goes to the pin,

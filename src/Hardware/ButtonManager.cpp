@@ -14,7 +14,11 @@ ButtonManager::ButtonManager()
 
 void ButtonManager::begin() {
   for (uint8_t i = 0; i < 3; i++) {
+<<<<<<< HEAD
     pinMode(_buttons[i].pin, INPUT_PULLDOWN);
+=======
+    pinMode(_buttons[i].pin, INPUT_PULLUP);
+>>>>>>> 9b0574246a65be3cbc8d62ab38c12e229cd0a0a2
 
     bool reading = readButton(i);
 
@@ -91,5 +95,9 @@ unsigned long ButtonManager::getResetComboHoldTime() const {
 
 bool ButtonManager::readButton(uint8_t index) const {
   // INPUT_PULLUP -> LOW = pressed
+<<<<<<< HEAD
   return digitalRead(_buttons[index].pin) == HIGH;
+=======
+  return digitalRead(_buttons[index].pin) == LOW;
+>>>>>>> 9b0574246a65be3cbc8d62ab38c12e229cd0a0a2
 }

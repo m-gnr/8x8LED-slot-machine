@@ -20,7 +20,10 @@
 #define LCD_MSG_CONGRATS      "Congrats!"
 #define LCD_MSG_RESETTING "Resetting..."
 #define LCD_MSG_RESET_IN  "Reset in "
+<<<<<<< HEAD
 #define LCD_MSG_BANK  "Bank: "
 #define LCD_MSG_BET   "Bet:  "
+=======
+>>>>>>> 9b0574246a65be3cbc8d62ab38c12e229cd0a0a2
 
 #endif

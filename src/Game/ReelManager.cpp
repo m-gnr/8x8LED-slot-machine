@@ -124,4 +124,8 @@ const SlotColor (*ReelManager::getGrid() const)[SLOT_COLUMN_COUNT] {
 
   return _grid;
 
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 9b0574246a65be3cbc8d62ab38c12e229cd0a0a2

@@ -12,8 +12,11 @@
 #include "../Game/ReelManager.h"
 #include "../Game/RewardSystem.h"
 
+<<<<<<< HEAD
 #include "../Effects/SoundManager.h"
 
+=======
+>>>>>>> 9b0574246a65be3cbc8d62ab38c12e229cd0a0a2
 class SlotMachine {
 public:
   SlotMachine();
@@ -53,8 +56,11 @@ private:
   SpinResult _lastResult;
 
   unsigned long _stateStartTime;
+<<<<<<< HEAD
 
   SoundManager _soundManager;
+=======
+>>>>>>> 9b0574246a65be3cbc8d62ab38c12e229cd0a0a2
 };
 
 #endif
