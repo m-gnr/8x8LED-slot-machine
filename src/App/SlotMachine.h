@@ -39,6 +39,7 @@ private:
   void renderReels();
   void updateLcdForState();
   void clampBetToBank();
+  bool updateVictoryMilestone();
 
 #if DEBUG_REWARD_LOGS
   void logRewardDebug() const;
@@ -59,6 +60,7 @@ private:
 
   int _bank;
   int _bet;
+  long _nextVictoryMilestone;
 
   SpinResult _lastResult;
 

@@ -5,7 +5,8 @@
 // BANK & BET
 // =====================
 #define START_BANK  10
-#define TARGET_BANK 99
+#define TARGET_BANK 100000
+#define VICTORY_MILESTONE_AMOUNT 100
 #define MIN_BET     1
 
 // =====================

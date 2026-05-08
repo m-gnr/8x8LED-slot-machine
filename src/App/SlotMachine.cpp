@@ -11,6 +11,7 @@ SlotMachine::SlotMachine()
     _effects(_matrix),
     _bank(START_BANK),
     _bet(MIN_BET),
+    _nextVictoryMilestone(VICTORY_MILESTONE_AMOUNT),
     _stateStartTime(0) {}
 
 void SlotMachine::begin() {
@@ -80,6 +81,7 @@ void SlotMachine::resetGame() {
   _state = GameState::IDLE;
   _bank = START_BANK;
   _bet = MIN_BET;
+  _nextVictoryMilestone = VICTORY_MILESTONE_AMOUNT;
   _stateStartTime = millis();
 
   _effects.stop();
@@ -176,6 +178,7 @@ void SlotMachine::handleResult() {
   if (_lastResult.totalReward > 0) {
     _bank += _lastResult.totalReward;
     clampBetToBank();
+    bool reachedVictoryMilestone = updateVictoryMilestone();
 
     if (_bank >= TARGET_BANK) {
       _state = GameState::GAME_COMPLETE;
@@ -191,7 +194,11 @@ void SlotMachine::handleResult() {
     _stateStartTime = millis();
     _effects.playWin(_lastResult, _reels.getGrid());
     _lcd.showWin(_lastResult.totalReward, _bank);
-    _buzzer.playWin();
+    if (reachedVictoryMilestone) {
+      _buzzer.playFinalVictory();
+    } else {
+      _buzzer.playWin();
+    }
     return;
   }
 
@@ -315,6 +322,18 @@ void SlotMachine::clampBetToBank() {
   if (_bet > _bank) {
     _bet = _bank;
   }
+}
+
+bool SlotMachine::updateVictoryMilestone() {
+  if (_bank < _nextVictoryMilestone || _bank >= TARGET_BANK) {
+    return false;
+  }
+
+  do {
+    _nextVictoryMilestone += VICTORY_MILESTONE_AMOUNT;
+  } while (_bank >= _nextVictoryMilestone && _nextVictoryMilestone < TARGET_BANK);
+
+  return true;
 }
 
 #if DEBUG_REWARD_LOGS
